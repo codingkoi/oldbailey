@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Old Bailey Case Search Results</title>
+    <link rel="stylesheet" href="/static/content.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div class="searchCont">
+      <h1>Old Bailey Theft Records 1700-1799</h1>
+      <h2>Search Terms</h2>
+      <div class="searchFormCont">
+        <form method="get" id="searchForm" action="/search?page={{Page}}">
+          <input type="text" name="text" value="{{SearchText}}"/>
+        </form>
+      </div>
+
+      <h2>Results: {{Start}}&ndash;{{End}} of {{Total}}</h2>
+      <div class="results">
+        {{#Records}}
+        <div class="record">
+          <div class="id">
+            <a href="/case/{{Id}}">{{Id}}</a>
+            {{#OfInterest}}
+            <span class="ofInterest">✓</span>
+            {{/OfInterest}}
+          </div>
+          <div class="defendants">
+            {{#Defendants}}
+            <div class="defendant">
+              {{GivenName}} {{Surname}} {{Gender}}
+            </div>
+            {{/Defendants}}
+          </div>
+          <div class="summary">{{Summary}}</div>
+        </div>
+        {{/Records}}
+      </div>
+      <div class="paginationCont">
+        {{#PaginationLinks}}
+        <a class="pagination{{#CurrentPage}} current{{/CurrentPage}}" 
+           href="{{Href}}">{{Label}}</a>
+        {{/PaginationLinks}}
+      </div>
+    </div>
+  </body>
+</html>
