@@ -8,6 +8,8 @@ a {color: blue; text-decoration: none;}
 .descCont {padding: 10px; width: 45%; min-width: 30em; float: left;}
 .descText {padding: 10px; border-radius: 15px; border: solid 1px black;}
 .offenceCont {padding: 10px; width: 20em; float: left;}
+.offenceCategory {font-weight: bold; font-size: 1.25em;}
+.offenceCategory .mainCat, .offenceCategory .subCat {text-transform: capitalize;}
 .offence, .victim, .notes {margin: 0 0 10px; padding: 10px; border-radius: 15px; border: solid 1px black;}
 .gender {float: right;}
 .verdict {font-size: 20px; font-weight: bold;}
