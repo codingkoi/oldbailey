@@ -51,7 +51,6 @@
 		    <label for="of-interest-chbx">Of Interest</label>
 		  </div>
 		  {{#Note}}
-		  <textarea id="notes-txt">{{Notes}}</textarea>
 		  <div>
 		    <input type="checkbox" id="clothing-chbx"
 				   {{#Clothing}} checked="checked"{{/Clothing}}>
@@ -63,10 +62,16 @@
 		    <label for="raw-textiles-chbx">Raw Textile Goods</label>
 		  </div>
           <div>
+		    <input type="checkbox" id="other-textiles-chbx"
+				   {{#OtherTextiles}} checked="checked"{{/OtherTextiles}}>
+		    <label for="other-textiles-chbx">Other Textile Goods</label>
+		  </div>
+          <div>
             <input type="checkbox" id="other-chbx"
                    {{#Other}} checked="checked"{{/Other}}>
             <label for="other-chbx">Other</label>
           </div>
+		  <textarea id="notes-txt">{{Notes}}</textarea>
 		  {{/Note}}
 	    </div>
 	  </div>

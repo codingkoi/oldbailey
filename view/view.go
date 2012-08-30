@@ -79,6 +79,12 @@ func CaseHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
 			badRequest(w, &r.Request)
 			return
 		}
+		note.OtherTextiles, err = strconv.ParseBool(r.FormValue("other-textiles"))
+		if err != nil {
+			log.Println(err)
+			badRequest(w, &r.Request)
+			return
+		}
 		note.Other, err = strconv.ParseBool(r.FormValue("other"))
 		if err != nil {
 			log.Println(err)

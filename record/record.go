@@ -22,7 +22,7 @@ type Record struct {
 	RawText     []byte
 	DisplayText string
 	Persons     []Person
-	Date        time.Time
+	Date        *time.Time
 	Offences    []Offence
 	Verdicts    []Verdict
 	OfInterest  bool
@@ -38,9 +38,11 @@ func NewRecord(content []byte) (record *Record) {
 	displayText := cleanUpContent(doc.String())
 	record = &Record{RawText: content, DisplayText: displayText}
 	dateStr := getInterp(doc.Root().NodePtr(), "date", doc)
-	record.Date, err = time.Parse("20060102", dateStr)
+	date, err := time.Parse("20060102", dateStr)
 	if err != nil {
-		panic(err)
+		record.Date = nil
+	} else {
+		record.Date = &date
 	}
 
 	xPath := xpath.NewXPath(doc.DocPtr())
@@ -90,8 +92,11 @@ func (record *Record) Summary() string {
 }
 
 func (record *Record) DisplayDate() string {
-	return fmt.Sprintf("%d %s, %d", record.Date.Day(), record.Date.Month(),
-		record.Date.Year())
+	if record.Date != nil {
+		return fmt.Sprintf("%d %s, %d", record.Date.Day(), record.Date.Month(),
+			record.Date.Year())
+	}
+	return "Date Unknown"
 }
 
 func (record *Record) Victims() (victims []Person) {
