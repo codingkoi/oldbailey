@@ -1,11 +1,11 @@
 /* old bailey css */
 body {font-family: Baskerville; font-size: 12pt; line-height: 1.4;}
 h1 {text-align: center; font-variant: small-caps; font-size: 3em; margin: 0; padding: 0;}
-h2 {margin: 0; padding: 0}
+h2 {margin: 0; padding: 0; font-size: 1.2em;}
 a {color: blue; text-decoration: none;}
 
-.caseCont {margin: 10px auto; width: 75%;}
-.descCont {padding: 10px; width: 45%; min-width: 30em; float: left;}
+.caseCont {margin: 0 10px;}
+.descCont {padding: 10px; width: 30em; float: left;}
 .descText {padding: 10px; border-radius: 15px; border: solid 1px black;}
 .offenceCont {padding: 10px; width: 20em; float: left;}
 .offenceCategory {font-weight: bold; font-size: 1.25em;}
@@ -17,7 +17,7 @@ a {color: blue; text-decoration: none;}
 .guilty {color: red;}
 .notes textarea {font-size: 12pt; font-family: Baskerville; width: 100%; height: 20em; border: none;}
 
-.searchCont {margin: 0 auto; width: 75%;}
+.searchCont {margin: 0 10px; width: 14em; float: left;}
 .searchFormCont {border: solid 1px black; border-radius: 15px; padding: 10px;}
 .searchFormCont input {font-size: 12pt; font-family: Baskerville; border: none; border-bottom: dotted 1px black; width: 100%}
 
@@ -27,6 +27,7 @@ a {color: blue; text-decoration: none;}
 .record .defendants {float: right; width: 12em; text-align: right;}
 .record .summary {margin: 0 13em 0 9em;}
 .record .summary p {margin: 0; padding: 0;}
+.record .curCase:before {content:"> ";}
 .results .defendant {white-space: nowrap;}
 .ofInterest {font-size: 150%; color: green;}
 

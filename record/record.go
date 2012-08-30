@@ -19,7 +19,7 @@ const SUMMARY_LENGTH int = 200
 type Record struct {
 	Id          string "_id"
 	Type        string
-	RawText     []byte
+	RawText     []byte `json:"-"`
 	DisplayText string
 	Persons     []Person
 	Date        *time.Time

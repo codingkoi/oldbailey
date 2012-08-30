@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
+	"encoding/json"
+	"strings"
 )
 
 func SearchHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
@@ -21,9 +23,18 @@ func SearchHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
 		}
 		searchText := params.Get("text")
 
-		responseBody := mustache.RenderFile("view/search.html",
-			search.Search(searchText, page))
-		w.Write([]byte(responseBody))
+		responseContent := search.Search(searchText, page)
+		var responseBody []byte
+		if strings.Contains(r.Header["Accept"][0], "application/json") {
+			responseBody, err = json.Marshal(responseContent)
+			if err != nil {
+				internalServerError(w, &r.Request)
+				return
+			}
+		} else {
+			responseBody = []byte(mustache.RenderFile("view/search.html", responseContent))
+		}
+		w.Write(responseBody)
 	default:
 		methodNotAllowed(w, &r.Request)
 	}
@@ -130,4 +141,10 @@ func resourceNotFound(w http.ResponseWriter, r *http.Request) {
 
 func successNoContent(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func internalServerError(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusInternalServerError)
+	body := "Internal Server Error"
+	w.Write([]byte(body))
 }
