@@ -3,15 +3,33 @@ package view
 import (
 	"../record"
 	"../search"
+	"encoding/json"
 	auth "github.com/abbot/go-http-auth"
 	"github.com/hoisie/mustache"
 	"log"
 	"net/http"
 	"regexp"
 	"strconv"
-	"encoding/json"
 	"strings"
 )
+
+type JsonUpdate struct {
+	OfInterest          bool
+	NotOfInterest       bool
+	Notes               string
+	Clothing            bool
+	ClothingCount       int
+	RawTextiles         bool
+	RawTextilesCount    int
+	OtherTextiles       bool
+	Accessories         bool
+	AccessoriesCount    int
+	HouseholdLinen      bool
+	HouseholdLinenCount int
+	Other               bool
+	OtherCount          int
+	OtherNotSpecified   bool
+}
 
 func SearchHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
 	switch r.Method {
@@ -70,38 +88,29 @@ func CaseHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
 			resourceNotFound(w, &r.Request)
 			return
 		}
-		baileyCase.OfInterest, err = strconv.ParseBool(r.FormValue("of-interest"))
+		var jsonUpdate JsonUpdate
+		err = json.Unmarshal([]byte(r.FormValue("json")), &jsonUpdate)
 		if err != nil {
 			log.Println(err)
 			badRequest(w, &r.Request)
 			return
 		}
-		note := &baileyCase.Note
-		note.Notes = r.FormValue("notes")
-		note.Clothing, err = strconv.ParseBool(r.FormValue("clothing"))
-		if err != nil {
-			log.Println(err)
-			badRequest(w, &r.Request)
-			return
-		}
-		note.RawTextiles, err = strconv.ParseBool(r.FormValue("raw-textiles"))
-		if err != nil {
-			log.Println(err)
-			badRequest(w, &r.Request)
-			return
-		}
-		note.OtherTextiles, err = strconv.ParseBool(r.FormValue("other-textiles"))
-		if err != nil {
-			log.Println(err)
-			badRequest(w, &r.Request)
-			return
-		}
-		note.Other, err = strconv.ParseBool(r.FormValue("other"))
-		if err != nil {
-			log.Println(err)
-			badRequest(w, &r.Request)
-			return
-		}
+
+		baileyCase.OfInterest = jsonUpdate.OfInterest
+		baileyCase.NotOfInterest = jsonUpdate.NotOfInterest
+		baileyCase.Clothing = jsonUpdate.Clothing
+		baileyCase.ClothingCount = jsonUpdate.ClothingCount
+		baileyCase.RawTextiles = jsonUpdate.RawTextiles
+		baileyCase.RawTextilesCount = jsonUpdate.RawTextilesCount
+		baileyCase.OtherTextiles = jsonUpdate.OtherTextiles
+		baileyCase.Accessories = jsonUpdate.Accessories
+		baileyCase.AccessoriesCount = jsonUpdate.AccessoriesCount
+		baileyCase.HouseholdLinen = jsonUpdate.HouseholdLinen
+		baileyCase.HouseholdLinenCount = jsonUpdate.HouseholdLinenCount
+		baileyCase.Other = jsonUpdate.Other
+		baileyCase.OtherCount = jsonUpdate.OtherCount
+		baileyCase.OtherNotSpecified = jsonUpdate.OtherNotSpecified
+
 		baileyCase.Save()
 		successNoContent(w, &r.Request)
 

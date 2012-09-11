@@ -29,6 +29,9 @@ a {color: blue; text-decoration: none;}
 .record .summary p {margin: 0; padding: 0;}
 .results .defendant {white-space: nowrap;}
 .ofInterest {font-size: 150%; color: green;}
+.notOfInterest {font-size: 150%; color: red;}
 
 .paginationCont {text-align: center;}
 .paginationCont .current {font-size: 150%;}
+
+.notes input[type='text'] {width: 3em; border: none; border-bottom: dotted 1px black; text-align: center;}

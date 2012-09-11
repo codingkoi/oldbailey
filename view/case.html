@@ -50,26 +50,51 @@
 				   {{#OfInterest}} checked="checked"{{/OfInterest}}>
 		    <label for="of-interest-chbx">Of Interest</label>
 		  </div>
+          <div>
+            <input type="checkbox" id="not-of-interest-chbx"
+                   {{#NotOfInterest}} checked="checked"{{/NotOfInterest}}>
+            <label for="not-of-interest-chbx">Not of Interest</label>
+          </div>
 		  {{#Note}}
 		  <div>
 		    <input type="checkbox" id="clothing-chbx"
 				   {{#Clothing}} checked="checked"{{/Clothing}}>
 		    <label for="clothing-chbx">Clothing</label>
+            <input type="text" id="clothing-cnt" value="{{ClothingCount}}">
 		  </div>
 		  <div>
 		    <input type="checkbox" id="raw-textiles-chbx"
 				   {{#RawTextiles}} checked="checked"{{/RawTextiles}}>
 		    <label for="raw-textiles-chbx">Raw Textile Goods</label>
+            <input type="text" id="raw-textiles-cnt" value="{{RawTextilesCount}}">
 		  </div>
           <div>
 		    <input type="checkbox" id="other-textiles-chbx"
 				   {{#OtherTextiles}} checked="checked"{{/OtherTextiles}}>
 		    <label for="other-textiles-chbx">Other Textile Goods</label>
 		  </div>
+		  <div>
+		    <input type="checkbox" id="household-linen-chbx"
+				   {{#HouseholdLinen}} checked="checked"{{/HouseholdLinen}}>
+		    <label for="household-linen-chbx">Household Linens</label>
+            <input type="text" id="household-linen-cnt" value="{{HouseholdLinenCount}}">
+		  </div>
+		  <div>
+		    <input type="checkbox" id="accessories-chbx"
+				   {{#Accessories}} checked="checked"{{/Accessories}}>
+		    <label for="accessories-chbx">Accessories</label>
+            <input type="text" id="accessories-cnt" value="{{AccessoriesCount}}">
+		  </div>
           <div>
             <input type="checkbox" id="other-chbx"
                    {{#Other}} checked="checked"{{/Other}}>
             <label for="other-chbx">Other</label>
+            <input type="text" id="other-cnt" value="{{OtherCount}}">
+          </div>
+          <div>
+            <input type="checkbox" id="other-not-specified-chbx"
+                   {{#OtherNotSpecified}} checked="checked"{{/OtherNotSpecified}}>
+            <label for="other-chbx">Other Goods Not Specified</label>
           </div>
 		  <textarea id="notes-txt">{{Notes}}</textarea>
 		  {{/Note}}
@@ -78,6 +103,7 @@
 	</div>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 	<script src="/static/js/case.js"></script>
+    <script scr="/static/js/json2.js"></script>
 	<script>
 	  window.CaseSetup("{{Id}}")
 	</script>

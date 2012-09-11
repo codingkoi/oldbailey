@@ -20,6 +20,9 @@
         <div class="record">
           <div class="id">
             <a href="/case/{{Id}}">{{Id}}</a>
+            {{#NotOfInterest}}
+            <span class="notOfInterest">✗</span>
+            {{/NotOfInterest}}
             {{#OfInterest}}
             <span class="ofInterest">✓</span>
             {{/OfInterest}}

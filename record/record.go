@@ -17,15 +17,16 @@ import (
 const SUMMARY_LENGTH int = 200
 
 type Record struct {
-	Id          string "_id"
-	Type        string
-	RawText     []byte `json:"-"`
-	DisplayText string
-	Persons     []Person
-	Date        *time.Time
-	Offences    []Offence
-	Verdicts    []Verdict
-	OfInterest  bool
+	Id            string "_id"
+	Type          string
+	RawText       []byte `json:"-"`
+	DisplayText   string
+	Persons       []Person
+	Date          *time.Time
+	Offences      []Offence
+	Verdicts      []Verdict
+	OfInterest    bool
+	NotOfInterest bool
 	Note
 }
 
