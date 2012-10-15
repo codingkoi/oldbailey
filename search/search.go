@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	//	"log"
+	// "log"
 	"math"
 	"net/http"
 	"net/url"
@@ -24,10 +24,12 @@ type Results struct {
 	ResultsPerPage  int
 	Total           int
 	SearchText      string
+	SubCategory     string
 	Records         []*record.Record
 	PaginationLinks []PaginationLink
 }
 
+// Search using the Old Bailey API to get the results
 func Search(text string, page int) (results Results) {
 	searchUrl, err := url.Parse("http://www.oldbaileyonline.org/obapi/ob")
 	if err != nil {
@@ -75,7 +77,30 @@ func Search(text string, page int) (results Results) {
 	for _, hit := range jsonData.Hits {
 		results.Records = append(results.Records, record.FetchRecord(hit))
 	}
-	results.SetPaginationLinks()
+	results.SetPaginationLinks("/search")
+
+	return
+}
+
+// Get a list of results from the cache of cases OfInterest and in the
+// sub category specified
+func CacheSearch(subcat string, page int) (results Results) {
+	count := 15
+	start := (page - 1) * count
+	cachedRes := record.FetchSavedCases(subcat, start, count)
+
+	results.Count = cachedRes.Count
+	results.Total = cachedRes.Total
+	results.Start = start
+	results.End = cachedRes.Count + start
+	results.Page = page
+	results.ResultsPerPage = count
+	results.SubCategory = subcat
+
+	for _, hit := range cachedRes.Hits {
+		results.Records = append(results.Records, record.FetchRecord(hit))
+	}
+	results.SetPaginationLinks("/cached")
 
 	return
 }
@@ -86,12 +111,15 @@ type PaginationLink struct {
 	CurrentPage bool
 }
 
-func (results *Results) SetPaginationLinks() {
+func (results *Results) SetPaginationLinks(basepath string) {
 	links := make([]PaginationLink, 0)
-	baseUrl, _ := url.Parse("/search")
+	baseUrl, _ := url.Parse(basepath)
 	params := baseUrl.Query()
 	if results.SearchText != "" {
 		params.Set("text", results.SearchText)
+	}
+	if results.SubCategory != "" {
+		params.Set("subcat", results.SubCategory)
 	}
 	baseUrl.RawQuery = params.Encode()
 

@@ -19,7 +19,8 @@ a {color: blue; text-decoration: none;}
 
 .searchCont {margin: 0 auto; width: 75%;}
 .searchFormCont {border: solid 1px black; border-radius: 15px; padding: 10px;}
-.searchFormCont input {font-size: 12pt; font-family: Baskerville; border: none; border-bottom: dotted 1px black; width: 100%}
+.searchFormCont input[type=text] {font-size: 12pt; font-family: Baskerville; border: none; border-bottom: dotted 1px black; width: 100%}
+.subcat {text-transform: capitalize; color: red;}
 
 .results {border: solid 1px black; border-radius: 15px; padding: 10px;}
 .record {padding: 10px; overflow: hidden;}

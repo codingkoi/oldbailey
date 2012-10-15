@@ -29,6 +29,7 @@ func runServer() {
 	http.HandleFunc("/static/", view.StaticHandler)
 	http.HandleFunc("/case/", a(view.CaseHandler))
 	http.HandleFunc("/search", a(view.SearchHandler))
+	http.HandleFunc("/cache", a(view.CacheHandler))
 	log.Println("Staring server on port 2258")
 	log.Fatal(http.ListenAndServe(":2258", nil))
 }

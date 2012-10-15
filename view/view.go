@@ -58,6 +58,34 @@ func SearchHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
 	}
 }
 
+func CacheHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
+	switch r.Method {
+	case "GET":
+		params := r.URL.Query()
+		page, err := strconv.Atoi(params.Get("page"))
+		if err != nil {
+			page = 1
+		}
+
+		subcat := params.Get("subcat")
+		
+		responseContent := search.CacheSearch(subcat, page)
+		var responseBody []byte
+		if strings.Contains(r.Header["Accept"][0], "application/json") {
+			responseBody, err = json.Marshal(responseContent)
+			if err != nil {
+				internalServerError(w, &r.Request)
+				return
+			}
+		} else {
+			responseBody = []byte(mustache.RenderFile("view/cache.html", responseContent))
+		}
+		w.Write(responseBody)
+	default:
+		methodNotAllowed(w, &r.Request)
+	}
+}
+
 func CaseHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
 	var err error
 	path := r.URL.Path
@@ -95,7 +123,8 @@ func CaseHandler(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
 			badRequest(w, &r.Request)
 			return
 		}
-
+		
+		// this is really ugly code, and should be fixed asap
 		baileyCase.OfInterest = jsonUpdate.OfInterest
 		baileyCase.NotOfInterest = jsonUpdate.NotOfInterest
 		baileyCase.Clothing = jsonUpdate.Clothing

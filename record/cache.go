@@ -7,6 +7,13 @@ import (
 
 var session *mgo.Session
 
+type CacheResults struct {
+	Hits  []string
+	Total int
+	Start int
+	Count int
+}
+
 func init() {
 	var err error
 	session, err = mgo.Dial("localhost")
@@ -15,9 +22,13 @@ func init() {
 	}
 }
 
+func CasesDB() *mgo.Collection {
+	return session.DB("oldbailey").C("cases")
+}
+
 func FromCache(id string) *Record {
 	var record Record
-	err := session.DB("oldbailey").C("cases").FindId(id).One(&record)
+	err := CasesDB().FindId(id).One(&record)
 	if err != nil && err.Error() == "not found" {
 		return nil
 	} else if err != nil {
@@ -27,9 +38,35 @@ func FromCache(id string) *Record {
 }
 
 func (record *Record) Save() {
-	selector := bson.M{"_id":record.Id}
-	_, err := session.DB("oldbailey").C("cases").Upsert(selector, record)
+	selector := bson.M{"_id": record.Id}
+	_, err := CasesDB().Upsert(selector, record)
 	if err != nil {
 		panic(err)
 	}
+}
+
+func FetchSavedCases(subcat string, start, count int) (results CacheResults) {
+	criteria := bson.M{
+		"offences.subcategory": subcat,
+		"ofinterest":           true,
+	}
+	query := CasesDB().Find(criteria).Sort("_id")
+	results.Total, _ = query.Count()
+	query.Skip(start)
+	query.Limit(count)
+	query.Select(bson.M{"_id": 1})
+
+	iter := query.Iter()
+	var result struct{ Id string "_id" }
+	for iter.Next(&result) {
+		results.Hits = append(results.Hits, result.Id)
+	}
+	if iter.Err() != nil {
+		panic(iter.Err())
+	}
+	results.Start = start
+	// at this point the query is limited to what we actually wanted
+	// so query.Count is the count of what we got
+	results.Count, _ = query.Count()
+	return
 }

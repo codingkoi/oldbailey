@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Old Bailey Case Search Results</title>
+    <link rel="stylesheet" href="/static/content.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div class="searchCont">
+      <h1>Old Bailey Theft Records 1700-1799</h1>
+      <h2>Saved Search Results</h2>
+      <div class="searchFormCont">
+        <form method="get" id="searchForm" action="/cache?page={{Page}}">
+          <select name="subcat">
+            <option value="animalTheft">Animal Theft</option>
+            <option value="burglary">Burglary</option>
+            <option value="embezzlment">Embezzlment</option>
+            <option value="extortion">Extortion</option>
+            <option value="gameLawOffence">Game Law Offence</option>
+            <option value="grandLarceny">Grand Larceny</option>
+            <option value="housebreaking">Housebreaking</option>
+            <option value="mail">Mail</option>
+            <option value="pettyLarceny">Petty Larceny</option>
+            <option value="pocketpicking">Pocketpicking</option>
+            <option value="receiving">Receiving</option>
+            <option value="shoplifting">Shoplifting</option>
+            <option value="simpleLarceny">Simple Larceny</option>
+            <option value="stealingFromMaster">Stealing From Master</option>
+            <option value="theftFromPlace">Theft From Place</option>
+            <option value="other">Other</option>
+          </select>
+          <input type="submit" value="Go"/>
+        </form>
+      </div>
+
+      <h2>Saved Results for <span class="subcat">{{SubCategory}}</span>: {{Start}}&ndash;{{End}} of {{Total}}</h2>
+      <div class="results">
+        {{#Records}}
+        <div class="record">
+          <div class="id">
+            <a href="/case/{{Id}}">{{Id}}</a>
+            {{#NotOfInterest}}
+            <span class="notOfInterest">✗</span>
+            {{/NotOfInterest}}
+            {{#OfInterest}}
+            <span class="ofInterest">✓</span>
+            {{/OfInterest}}
+          </div>
+          <div class="defendants">
+            {{#Defendants}}
+            <div class="defendant">
+              {{GivenName}} {{Surname}} {{Gender}}
+            </div>
+            {{/Defendants}}
+          </div>
+          <div class="summary">{{Summary}}</div>
+        </div>
+        {{/Records}}
+      </div>
+      <div class="paginationCont">
+        {{#PaginationLinks}}
+        <a class="pagination{{#CurrentPage}} current{{/CurrentPage}}" 
+           href="{{Href}}">{{Label}}</a>
+        {{/PaginationLinks}}
+      </div>
+    </div>
+  </body>
+</html>
