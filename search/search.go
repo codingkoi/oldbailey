@@ -100,7 +100,7 @@ func CacheSearch(subcat string, page int) (results Results) {
 	for _, hit := range cachedRes.Hits {
 		results.Records = append(results.Records, record.FetchRecord(hit))
 	}
-	results.SetPaginationLinks("/cached")
+	results.SetPaginationLinks("/cache")
 
 	return
 }
